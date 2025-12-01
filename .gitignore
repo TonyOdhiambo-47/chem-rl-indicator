@@ -1,0 +1,34 @@
+# Python
+env/.venv
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info
+dist/
+build/
+
+# Node / React
+web/node_modules
+web/dist
+web/.vite
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+env/tb_logs/
+env/models/*.zip
+
