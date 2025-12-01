@@ -1,14 +1,14 @@
 # Action Plan: Next Steps
 
-## 🎯 Current Status
-✅ Environment with realistic 50mL burette constraint  
-✅ Robust training configuration (5M timesteps, ~15-20 min)  
-✅ Visualization system (training progress + live React animation)  
-✅ All code ready and tested  
+## Current Status
+- Environment with realistic 50mL burette constraint  
+- Robust training configuration (5M timesteps, ~15-20 min)  
+- Visualization system (training progress + live React animation)  
+- All code ready and tested  
 
 ---
 
-## 🚀 Step 1: Train the Model (15-20 minutes)
+## Step 1: Train the Model (15-20 minutes)
 
 **This is the main step - train your robust model:**
 
@@ -37,7 +37,7 @@ python train_rl.py
 
 ---
 
-## 📊 Step 2: Evaluate the Trained Model
+## Step 2: Evaluate the Trained Model
 
 **After training completes:**
 
@@ -58,7 +58,7 @@ python visualize_policy.py
 
 ---
 
-## 🎬 Step 3: Set Up Live React Animation
+## Step 3: Set Up Live React Animation
 
 **While training (or after):**
 
@@ -97,7 +97,7 @@ npm run dev
 
 ---
 
-## 🎥 Step 4: Create Demo Materials (Portfolio)
+## Step 4: Create Demo Materials (Portfolio)
 
 ### 4a. Record Training Progress
 
@@ -123,7 +123,7 @@ Create a summary showing:
 
 ---
 
-## 📝 Step 5: Prepare for Submission
+## Step 5: Prepare for Submission
 
 ### 5a. Clean Up
 
@@ -150,7 +150,7 @@ git commit -m "Complete: Robust RL titration environment with realistic constrai
 
 ---
 
-## 🎯 Recommended Order
+## Recommended Order
 
 1. **Start training** (`python train_rl.py`) - Let it run ~15-20 min
 2. **While training:** Set up React app and export episode data
@@ -160,7 +160,7 @@ git commit -m "Complete: Robust RL titration environment with realistic constrai
 
 ---
 
-## 💡 Pro Tips
+## Pro Tips
 
 ### For Best Results:
 
@@ -180,19 +180,19 @@ git commit -m "Complete: Robust RL titration environment with realistic constrai
 
 ---
 
-## 🎓 What This Demonstrates
+## What This Demonstrates
 
 After completing these steps, you'll have:
 
-✅ **Robust RL model** that learns from mistakes  
-✅ **Realistic environment** with physical constraints  
-✅ **Professional visualization** (Python + React)  
-✅ **Complete pipeline** (training → evaluation → demo)  
-✅ **Portfolio-ready project** for top AI RL labs  
+- **Robust RL model** that learns from mistakes  
+- **Realistic environment** with physical constraints  
+- **Professional visualization** (Python + React)  
+- **Complete pipeline** (training → evaluation → demo)  
+- **Portfolio-ready project** for top AI RL labs  
 
 ---
 
-## 🚀 Ready to Start?
+## Ready to Start?
 
 **Begin with training:**
 
@@ -204,5 +204,5 @@ python train_rl.py
 
 **Then follow the steps above!**
 
-This project is going to be **incredible** for your portfolio. The combination of real chemistry, robust RL, and professional visualization is exactly what top labs look for! 🎯✨
+This project is going to be **incredible** for your portfolio. The combination of real chemistry, robust RL, and professional visualization is exactly what top labs look for!
 

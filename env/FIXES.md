@@ -2,7 +2,7 @@
 
 ## Issues Found & Fixed
 
-### 1. **Initial pH Calculation Bug** ✅ FIXED
+### 1. **Initial pH Calculation Bug** - FIXED
 **Problem:** Initial pH was showing as 0.00 instead of the correct weak acid pH (~2.88)
 
 **Root Cause:** When no base is added (Vb=0), the code tried to use Henderson-Hasselbalch with n_A=0, causing log(0) issues.
@@ -15,7 +15,7 @@ if n_OH <= 1e-12:
     pH = -np.log10(H_plus)
 ```
 
-### 2. **Reward Function Too Harsh** ✅ FIXED
+### 2. **Reward Function Too Harsh** - FIXED
 **Problem:** Agent learned to stop immediately because:
 - Stopping early: reward = -0.599
 - Taking steps: reward = -0.599 - 0.01 per step (worse!)
@@ -31,7 +31,7 @@ if n_OH <= 1e-12:
 - Episode length: 4.37 → 11.4 steps
 - Episode reward: 1.09 → 5.35
 
-### 3. **Visualization Missing Initial State** ✅ FIXED
+### 3. **Visualization Missing Initial State** - FIXED
 **Problem:** Plots didn't show the starting point (pH ~2.88, Vb=0)
 
 **Fix:** 

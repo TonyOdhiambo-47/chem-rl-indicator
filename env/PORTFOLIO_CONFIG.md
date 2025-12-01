@@ -1,6 +1,6 @@
 # Portfolio-Grade Training Configuration
 
-## 🎯 Mission: Next-Level RL for Top AI Lab
+## Mission: Next-Level RL for Top AI Lab
 
 This configuration is designed to produce **publication-quality results** that demonstrate:
 - Deep understanding of RL environment design
@@ -10,7 +10,7 @@ This configuration is designed to produce **publication-quality results** that d
 
 ---
 
-## 🚀 Key Improvements
+## Key Improvements
 
 ### 1. **Extended Episode Length**
 - **Before:** 60 steps (too restrictive)
@@ -75,7 +75,7 @@ Multi-component reward system:
 
 ---
 
-## 📊 Expected Results
+## Expected Results
 
 After full training, the agent should:
 
@@ -99,7 +99,7 @@ After full training, the agent should:
 
 ---
 
-## 🎓 What This Demonstrates
+## What This Demonstrates
 
 ### For Portfolio/Interview:
 
@@ -128,7 +128,7 @@ After full training, the agent should:
 
 ---
 
-## 🏃 Running Training
+## Running Training
 
 ```bash
 cd env
@@ -149,7 +149,7 @@ python train_rl.py
 
 ---
 
-## 📈 Evaluation
+## Evaluation
 
 After training, evaluate with:
 
@@ -159,14 +159,14 @@ python watch_training.py --model models/ppo_weak_acid_indicator.zip --episodes 5
 ```
 
 **Success metrics:**
-- ✅ Final pH within 0.1 of 7.0
-- ✅ Base volume within 2 mL of 49.7 mL
-- ✅ Consistent performance across episodes
-- ✅ Clear learning progression visible
+- Final pH within 0.1 of 7.0
+- Base volume within 2 mL of 49.7 mL
+- Consistent performance across episodes
+- Clear learning progression visible
 
 ---
 
-## 🔬 Technical Details
+## Technical Details
 
 ### Reward Function Breakdown
 
@@ -208,14 +208,14 @@ Output: Action probabilities (7 actions)
 
 ---
 
-## 🎯 This is Portfolio-Ready
+## This is Portfolio-Ready
 
 This configuration demonstrates:
-- ✅ Deep RL understanding
-- ✅ Professional engineering
-- ✅ Real-world application
-- ✅ Comprehensive evaluation
-- ✅ Publication-quality results
+- Deep RL understanding
+- Professional engineering
+- Real-world application
+- Comprehensive evaluation
+- Publication-quality results
 
 **Perfect for:** Top AI/RL labs, research positions, ML engineer roles
 

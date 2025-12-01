@@ -1,10 +1,10 @@
 # Anti-Overshoot Training Configuration
 
-## 🎯 Problem: Agent Overshooting pH 7.0
+## Problem: Agent Overshooting pH 7.0
 
 The agent was overshooting the target pH 7.0, going to pH 8+ instead of stopping at the optimal point.
 
-## ✅ Solution: Asymmetric Reward + Optimized Training
+## Solution: Asymmetric Reward + Optimized Training
 
 ### 1. **Asymmetric Reward Function**
 
@@ -57,7 +57,7 @@ The agent was overshooting the target pH 7.0, going to pH 8+ instead of stopping
 
 ---
 
-## 🚀 Optimized Hyperparameters
+## Optimized Hyperparameters
 
 ### Network Architecture
 - **Size:** [512, 512, 256] (was [256, 256, 128])
@@ -108,7 +108,7 @@ The agent was overshooting the target pH 7.0, going to pH 8+ instead of stopping
 
 ---
 
-## 📊 Expected Learning Progression
+## Expected Learning Progression
 
 ### Early Training (0-2M steps):
 - Many overshooting mistakes
@@ -127,7 +127,7 @@ The agent was overshooting the target pH 7.0, going to pH 8+ instead of stopping
 
 ---
 
-## 🎯 Success Criteria
+## Success Criteria
 
 After 10M timesteps, agent should:
 
@@ -147,7 +147,7 @@ After 10M timesteps, agent should:
 
 ---
 
-## 🏃 Running Training
+## Running Training
 
 ```bash
 cd env
@@ -165,7 +165,7 @@ python train_rl.py
 
 ---
 
-## 🔬 Why This Works
+## Why This Works
 
 ### Asymmetric Penalties
 - Creates strong gradient away from overshooting
@@ -185,5 +185,5 @@ python train_rl.py
 
 ---
 
-This configuration should produce a model that **consistently stops at pH 6.9-7.0 without overshooting!** 🎯
+This configuration should produce a model that **consistently stops at pH 6.9-7.0 without overshooting!**
 

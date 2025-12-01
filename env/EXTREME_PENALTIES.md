@@ -1,4 +1,4 @@
-# 🔥 EXTREME Anti-Overshoot Penalties
+# EXTREME Anti-Overshoot Penalties
 
 ## Problem Identified
 
@@ -35,12 +35,12 @@ The agent was still overshooting to pH 7.46 because:
 
 | pH | Old Reward | New Reward | Change |
 |----|-----------|------------|--------|
-| 6.9 | +64.12 | +64.12 | ✅ Same (good) |
-| 7.0 | +70.00 | +70.00 | ✅ Same (perfect) |
-| 7.1 | +42.12 | +34.12 | ⚠️ Lower (discourages) |
-| 7.2 | +18.94 | **-61.06** | 🔥 NEGATIVE! |
-| 7.46 | +8.13 | **-71.87** | 🔥 NEGATIVE! |
-| 8.0 | -35.68 | **-185.68** | 🔥 Much worse! |
+| 6.9 | +64.12 | +64.12 | Same (good) |
+| 7.0 | +70.00 | +70.00 | Same (perfect) |
+| 7.1 | +42.12 | +34.12 | Lower (discourages) |
+| 7.2 | +18.94 | **-61.06** | NEGATIVE! |
+| 7.46 | +8.13 | **-71.87** | NEGATIVE! |
+| 8.0 | -35.68 | **-185.68** | Much worse! |
 
 ## Critical: Must Retrain!
 
@@ -56,12 +56,12 @@ python train_rl.py
 
 ## Expected Results After Retraining
 
-✅ **Agent stops at pH 6.9-7.0** (never above 7.1)
-✅ **Negative rewards** for any overshoot discourage it
-✅ **Massive bonuses** for hitting target encourage stopping
-✅ **Robust policy** that learns from mistakes
+- **Agent stops at pH 6.9-7.0** (never above 7.1)
+- **Negative rewards** for any overshoot discourage it
+- **Massive bonuses** for hitting target encourage stopping
+- **Robust policy** that learns from mistakes
 
 ---
 
-**The agent will now learn: "Overshooting = DEATH. Stop early = SUCCESS."** 🎯
+**The agent will now learn: "Overshooting = DEATH. Stop early = SUCCESS."**
 

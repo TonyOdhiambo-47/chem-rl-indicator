@@ -1,12 +1,12 @@
 # Chemistry Behind the Titration Model
 
-## 🧪 Overview
+## Overview
 
 This project implements a **realistic weak acid-strong base titration** using actual analytical chemistry equations. The model calculates pH at every point in the titration curve using three distinct chemical regimes.
 
 ---
 
-## 📚 Chemical Background
+## Chemical Background
 
 ### The Reaction
 
@@ -29,7 +29,7 @@ HA(aq) + OH⁻(aq) → A⁻(aq) + H₂O(l)
 
 ---
 
-## 🔬 Three Chemical Regimes
+## Three Chemical Regimes
 
 The pH calculation switches between three distinct regions based on how much base has been added:
 
@@ -182,7 +182,7 @@ if |pH - 7.0| < 0.15:
 
 ---
 
-## 📊 The Titration Curve
+## The Titration Curve
 
 ### Shape Characteristics
 
@@ -207,22 +207,22 @@ For weak acid-strong base titrations:
 
 ---
 
-## 🔬 Real-World Accuracy
+## Real-World Accuracy
 
 ### What's Realistic
 
-✅ **Accurate equations:** Uses actual analytical chemistry formulas  
-✅ **Correct regimes:** Properly handles all three titration regions  
-✅ **Realistic pKa:** Uses acetic acid (pKa=4.76) as default  
-✅ **Indicator behavior:** Models real indicator color transitions  
-✅ **Volume calculations:** Proper mole and concentration math  
+- **Accurate equations:** Uses actual analytical chemistry formulas  
+- **Correct regimes:** Properly handles all three titration regions  
+- **Realistic pKa:** Uses acetic acid (pKa=4.76) as default  
+- **Indicator behavior:** Models real indicator color transitions  
+- **Volume calculations:** Proper mole and concentration math  
 
 ### Simplifications
 
-⚠️ **Activity coefficients:** Assumes ideal solutions (activity = concentration)  
-⚠️ **Temperature:** Fixed at 25°C (Kw = 10⁻¹⁴)  
-⚠️ **Ionic strength:** Doesn't account for salt effects  
-⚠️ **Dilution:** Assumes perfect mixing (no local concentration gradients)  
+- **Activity coefficients:** Assumes ideal solutions (activity = concentration)  
+- **Temperature:** Fixed at 25°C (Kw = 10⁻¹⁴)  
+- **Ionic strength:** Doesn't account for salt effects  
+- **Dilution:** Assumes perfect mixing (no local concentration gradients)  
 
 **For RL purposes, these simplifications are fine:**
 - The physics are correct enough to be realistic
@@ -231,7 +231,7 @@ For weak acid-strong base titrations:
 
 ---
 
-## 🎯 Why This Matters for RL
+## Why This Matters for RL
 
 ### 1. **Realistic Partial Observability**
 
@@ -264,7 +264,7 @@ Our reward zones align with chemical regions:
 
 ---
 
-## 📚 References
+## References
 
 These are standard equations from:
 - **Analytical Chemistry** textbooks (Skoog, Harris, etc.)
@@ -279,7 +279,7 @@ These are standard equations from:
 
 ---
 
-## 🎓 Educational Value
+## Educational Value
 
 This project demonstrates:
 1. **Domain expertise:** Real chemistry knowledge
@@ -295,5 +295,5 @@ This project demonstrates:
 
 ---
 
-This is **real chemistry**, not a toy problem. The equations are what you'd use in an actual analytical chemistry lab! 🧪✨
+This is **real chemistry**, not a toy problem. The equations are what you'd use in an actual analytical chemistry lab!
 

@@ -1,6 +1,6 @@
 # Live Agent Animation Guide
 
-## 🎬 Overview
+## Overview
 
 The React app now includes a **live animation mode** that shows the RL agent's performance step-by-step, with:
 - Real-time titration curve building
@@ -9,7 +9,7 @@ The React app now includes a **live animation mode** that shows the RL agent's p
 - Reward tracking
 - Professional portfolio-quality presentation
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Export Episode Data
 
@@ -39,7 +39,7 @@ npm run dev
 2. Click **"Live Agent Animation"** button at the top
 3. Watch the agent's performance unfold step-by-step!
 
-## 📊 Features
+## Features
 
 ### Live Animation
 - **Auto-play**: Automatically steps through the episode
@@ -62,7 +62,7 @@ npm run dev
 - Distance to target pH
 - V/Veq ratio
 
-## 🎨 Portfolio Presentation
+## Portfolio Presentation
 
 This animation is perfect for:
 - **Demos**: Show how the agent learns and performs
@@ -70,7 +70,7 @@ This animation is perfect for:
 - **Portfolio**: Impressive interactive visualization
 - **Interviews**: Demonstrate understanding of RL + visualization
 
-## 📝 Export Options
+## Export Options
 
 ```bash
 # Random policy
@@ -86,7 +86,7 @@ python export_episode.py --model models/ppo_weak_acid_indicator.zip --output ../
 python export_episode.py --model models/ppo_weak_acid_indicator.zip --output my_episode.json
 ```
 
-## 🔧 Technical Details
+## Technical Details
 
 ### Data Format
 
@@ -111,7 +111,7 @@ The exported JSON contains:
 - Responsive design (works on mobile)
 - Lightweight JSON data format
 
-## 🎯 Use Cases
+## Use Cases
 
 1. **Training Progress**: Export episodes at different training stages
 2. **Comparison**: Export random vs trained episodes
@@ -119,7 +119,7 @@ The exported JSON contains:
 4. **Presentation**: Impressive visual demos
 5. **Debugging**: Visualize what the agent is learning
 
-## 💡 Tips
+## Tips
 
 - Export multiple episodes to compare performance
 - Use deterministic mode for consistent demos
@@ -129,5 +129,5 @@ The exported JSON contains:
 
 ---
 
-**This is portfolio-grade visualization that will impress any AI/RL lab!** 🚀
+**This is portfolio-grade visualization that will impress any AI/RL lab!**
 

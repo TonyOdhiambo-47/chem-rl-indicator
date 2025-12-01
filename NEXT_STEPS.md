@@ -1,13 +1,13 @@
 # Next Steps Guide
 
-## ✅ Current Status
+## Current Status
 - Environment is set up and working
 - All packages are installed
 - Code is ready to run
 
 ---
 
-## 🚀 Step 1: Train the RL Agent (Optional)
+## Step 1: Train the RL Agent (Optional)
 
 Train a PPO agent to learn the titration task:
 
@@ -26,7 +26,7 @@ python train_rl.py
 
 ---
 
-## 📊 Step 2: Visualize Policy Comparison
+## Step 2: Visualize Policy Comparison
 
 Compare random vs trained agent behavior:
 
@@ -45,7 +45,7 @@ python visualize_policy.py
 
 ---
 
-## 🎨 Step 3: Launch React Visualization App
+## Step 3: Launch React Visualization App
 
 See the indicator color change in real-time:
 
@@ -65,7 +65,7 @@ Then open the URL shown (usually `http://localhost:5173/`)
 
 ---
 
-## 🧪 Step 4: Test the Environment Interactively
+## Step 4: Test the Environment Interactively
 
 Quick test to see the environment in action:
 
@@ -93,7 +93,7 @@ for i in range(5):
 
 ---
 
-## 📝 Step 5: Commit to Git (When Ready)
+## Step 5: Commit to Git (When Ready)
 
 ```bash
 cd "/Users/tonyodhiambo/Desktop/Comp Chem/chem-rl-indicator"
@@ -104,7 +104,7 @@ git commit -m "Initial commit: titration env + indicator visualizer"
 
 ---
 
-## 🎯 Recommended Order
+## Recommended Order
 
 1. **First:** Launch React app (`npm run dev`) - quickest way to see it working
 2. **Then:** Train the agent (if you want to see RL in action)
@@ -112,7 +112,7 @@ git commit -m "Initial commit: titration env + indicator visualizer"
 
 ---
 
-## 💡 Tips
+## Tips
 
 - The linter warnings in your IDE are just cache issues - the code runs fine
 - Training can be interrupted and resumed

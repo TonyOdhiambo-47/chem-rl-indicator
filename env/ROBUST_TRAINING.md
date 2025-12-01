@@ -1,6 +1,6 @@
 # Robust Training Configuration
 
-## 🎯 Goal: Realistic, Robust Model
+## Goal: Realistic, Robust Model
 
 This configuration trains a model that:
 - Works within realistic physical constraints (50mL burette)
@@ -10,7 +10,7 @@ This configuration trains a model that:
 
 ---
 
-## 🔬 Realistic Chemistry Constraints
+## Realistic Chemistry Constraints
 
 ### 50mL Burette Limit
 
@@ -37,7 +37,7 @@ if new_Vb_ml > max_burette_ml:
 
 ---
 
-## 🚀 Training Improvements
+## Training Improvements
 
 ### Extended Training Time
 
@@ -77,7 +77,7 @@ if new_Vb_ml > max_burette_ml:
 
 ---
 
-## 📊 Learning from Mistakes
+## Learning from Mistakes
 
 ### How Agent Learns
 
@@ -108,7 +108,7 @@ if new_Vb_ml > max_burette_ml:
 
 ---
 
-## ⏱️ Training Timeline
+## Training Timeline
 
 ### Expected Progress
 
@@ -140,7 +140,7 @@ Training visualizations saved every 250 episodes show:
 
 ---
 
-## 🎯 Success Metrics
+## Success Metrics
 
 After full training, agent should:
 
@@ -162,7 +162,7 @@ After full training, agent should:
 
 ---
 
-## 🏃 Running Training
+## Running Training
 
 ```bash
 cd env
@@ -183,7 +183,7 @@ python train_rl.py
 
 ---
 
-## 🔍 Why This Configuration Works
+## Why This Configuration Works
 
 1. **Realistic Constraints:**
    - 50mL burette = real-world limitation
@@ -207,7 +207,7 @@ python train_rl.py
 
 ---
 
-## 📈 Expected Results
+## Expected Results
 
 After 5M timesteps (~15-20 min):
 
@@ -229,5 +229,5 @@ This configuration produces a **robust, realistic, portfolio-quality model** tha
 - Extensive exploration
 - Professional RL engineering
 
-Perfect for impressing top AI RL labs! 🚀
+Perfect for impressing top AI RL labs!
 

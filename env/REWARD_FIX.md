@@ -7,27 +7,27 @@
 
 ## Fixes Applied
 
-### 1. **Exponential Reward Function** ✅
+### 1. **Exponential Reward Function**
 Changed from linear to exponential reward:
 - **Old:** `reward = 1.0 - (dist/7.0)` → At pH 5.01: reward = 0.71
 - **New:** `reward = 10.0 * exp(-dist/1.5)` → At pH 5.01: reward = 2.05, At pH 7.0: reward = 10.0
 
 This creates a **strong gradient** toward pH 7.0.
 
-### 2. **Progress Bonus** ✅
+### 2. **Progress Bonus**
 Added reward for making progress toward target:
 ```python
 progress = last_dist - current_dist
 reward += 2.0 * progress  # Bonus for getting closer
 ```
 
-### 3. **Much Larger Stopping Bonuses** ✅
+### 3. **Much Larger Stopping Bonuses**
 - pH within 0.05: **+20.0 bonus** (was +2.0)
 - pH within 0.1: **+10.0 bonus** (was +1.0)
 - pH within 0.2: **+5.0 bonus** (was +0.5)
 - Stopping far: **-5.0 penalty** (was -0.5)
 
-### 4. **Training Parameters** ✅
+### 4. **Training Parameters**
 - Max steps: 40 → **60** (more room to explore)
 - Step sizes: Added **2.0 mL** option for faster progress
 - Training timesteps: 200k → **300k** (more training)
