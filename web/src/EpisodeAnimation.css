@@ -1,0 +1,350 @@
+.episode-animation-container {
+  min-height: 100vh;
+  padding: 0.75rem 1.25rem;
+  background: #0f172a;
+  color: #e5e7eb;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  box-sizing: border-box;
+}
+
+.animation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #1f2937;
+}
+
+.animation-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #60a5fa;
+}
+
+.controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.controls button {
+  background: #1e40af;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.9rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.controls button:hover {
+  background: #2563eb;
+}
+
+.controls label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+
+.animation-content {
+  display: grid;
+  grid-template-columns: 5fr 3fr; /* Make left side dominate width */
+  gap: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.curve-panel {
+  background: #020617;
+  padding: 1.1rem;
+  border-radius: 0.75rem;
+  border: 1px solid #1f2937;
+}
+
+.curve-container {
+  width: 100%;
+  height: 360px; /* Slightly shorter to reduce vertical scroll */
+  background: #0a0f1e;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.graph-bottom-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.graph-info-section {
+  background: #0a0f1e;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #1f2937;
+}
+
+.graph-info-section h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.95rem;
+  color: #60a5fa;
+  border-bottom: 1px solid #1f2937;
+  padding-bottom: 0.25rem;
+}
+
+.titration-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.trajectory-path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: drawPath 2s ease-in-out forwards;
+}
+
+@keyframes drawPath {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.data-point {
+  transition: r 0.3s ease;
+}
+
+.data-point:hover {
+  r: 8;
+}
+
+.state-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.indicator-display {
+  background: #020617;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid #1f2937;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.indicator-circle-large {
+  width: 135px;
+  height: 135px;
+  border-radius: 999px;
+  border: 4px solid #111827;
+  transition: background-color 0.5s ease, box-shadow 0.5s ease;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.color-label {
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
+
+.state-info {
+  background: #020617;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid #1f2937;
+}
+
+.info-section {
+  margin-bottom: 1.1rem;
+}
+
+.info-section:last-child {
+  margin-bottom: 0;
+}
+
+.info-section h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  color: #60a5fa;
+  border-bottom: 1px solid #1f2937;
+  padding-bottom: 0.5rem;
+}
+
+.info-grid {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.summary-inline-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background: #0a0f1e;
+  border-radius: 0.25rem;
+}
+
+.info-item .label {
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+
+.info-item .value {
+  color: #e5e7eb;
+  font-weight: 600;
+  font-family: monospace;
+}
+
+.info-item .value.highlight {
+  color: #60a5fa;
+  font-size: 1.1rem;
+}
+
+.action-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: #0a0f1e;
+  border-radius: 0.5rem;
+  border: 2px solid #3b82f6;
+}
+
+.action-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #60a5fa;
+  text-align: center;
+}
+
+.action-number {
+  font-size: 0.9rem;
+  color: #9ca3af;
+  text-align: center;
+}
+
+.progress-section {
+  margin-top: 0.75rem;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 8px;
+  background: #1f2937;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  transition: width 0.3s ease;
+  border-radius: 4px;
+}
+
+.progress-text {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #9ca3af;
+  margin: 0;
+}
+
+.episode-summary {
+  background: #020617;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 2px solid #3b82f6;
+  margin-top: 1.5rem;
+}
+
+.episode-summary h3 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.5rem;
+  color: #60a5fa;
+  text-align: center;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: #0a0f1e;
+  border-radius: 0.5rem;
+}
+
+.summary-label {
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+
+.summary-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: monospace;
+  color: #e5e7eb;
+}
+
+.summary-value.highlight {
+  color: #60a5fa;
+  font-size: 1.8rem;
+}
+
+.summary-value.success {
+  color: #10b981;
+}
+
+.summary-value.failure {
+  color: #ef4444;
+}
+
+.no-data {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #9ca3af;
+}
+
+.no-data .hint {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.no-data code {
+  background: #1f2937;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  color: #60a5fa;
+}
+
+@media (max-width: 1024px) {
+  .animation-content {
+    grid-template-columns: 1fr;
+  }
+}
+

@@ -1,13 +1,15 @@
 # env/train_rl.py
 
-import os
 from pathlib import Path
 
-import numpy as np
 from stable_baselines3 import PPO
+from stable_baselines3.common.callbacks import CallbackList, EvalCallback
 from stable_baselines3.common.env_util import make_vec_env
+from stable_baselines3.common.vec_env import DummyVecEnv
+import torch
 
 from src.titration_env import WeakAcidIndicatorEnv
+from training_callback import EpisodeVisualizationCallback, ReliabilityEarlyStopCallback
 
 
 def make_env():
@@ -17,10 +19,11 @@ def make_env():
         Cb=0.1,
         pKa=4.76,
         pH_target=7.0,
-        max_steps=40,
-        step_sizes_ml=(0.1, 0.5, 1.0),
+        max_steps=200,  # PORTFOLIO-GRADE: Allow extensive exploration
+        step_sizes_ml=(0.1, 0.2, 0.5, 1.0, 2.0, 3.0),  # More granular control
         pKa_ind=7.0,
         neutral_band=0.15,
+        max_burette_ml=50.0,  # REALISTIC: Standard burette capacity
     )
 
 
@@ -29,21 +32,100 @@ def main():
     models_dir = root / "models"
     models_dir.mkdir(exist_ok=True)
 
-    # Vectorized env for parallel rollout (8 copies)
-    env = make_vec_env(make_env, n_envs=8)
+    # Vectorized env for parallel rollout (16 copies for faster training)
+    vec_env = make_vec_env(make_env, n_envs=16)
+    
+    # Single env for visualization + evaluation callbacks
+    single_env = make_env()
+    eval_env = make_env()
 
+    # Check if tensorboard is available
+    try:
+        import tensorboard  # type: ignore
+        tb_log = str(root / "tb_logs")
+    except ImportError:
+        tb_log = None
+        print("TensorBoard not installed. Training without tensorboard logging.")
+
+    # Setup callbacks: training visualization + reliability-based early stopping
+    vis_callback = EpisodeVisualizationCallback(
+        env=single_env,
+        log_dir=str(root / "training_visualizations"),
+        save_freq=250,  # Save visualization every 250 episodes (more frequent tracking)
+        verbose=1,
+    )
+    reliability_callback = ReliabilityEarlyStopCallback(
+        eval_env=eval_env,
+        eval_freq=50_000,         # Evaluate every 50k steps
+        n_eval_episodes=32,       # Number of eval episodes per check
+        pH_low=6.9,
+        pH_high=7.05,
+        success_threshold=0.9,    # 90% of eval episodes must succeed
+        patience=3,               # 3 consecutive good evals to stop
+        verbose=1,
+    )
+    callbacks = CallbackList([vis_callback, reliability_callback])
+
+    # OPTIMIZED TRAINING: Hyperparameters tuned to prevent overshooting
     model = PPO(
         "MlpPolicy",
-        env,
+        vec_env,
         verbose=1,
-        tensorboard_log=str(root / "tb_logs"),
-        n_steps=2048,
-        batch_size=64,
-        gamma=0.99,
+        tensorboard_log=tb_log,
+        n_steps=4096,  # Longer rollouts for better gradient estimates
+        batch_size=1024,  # Large batches (factor of n_steps*n_envs=65536) for stable learning
+        n_epochs=15,  # More optimization epochs for better convergence
+        gamma=0.998,  # Higher discount for longer-term planning (prevents overshooting)
+        learning_rate=2e-4,  # Lower, more stable learning rate
+        ent_coef=0.05,  # Higher entropy for extensive exploration (learns from mistakes)
+        vf_coef=0.5,  # Value function coefficient
+        max_grad_norm=0.5,  # Gradient clipping for stability
+        clip_range=0.15,  # Tighter clip range for more stable updates
+        policy_kwargs=dict(
+            net_arch=[512, 512, 256],  # Larger, deeper network for complex policy
+            activation_fn=torch.nn.Tanh,  # Tanh for smoother gradients
+        ),
     )
 
-    total_timesteps = 200_000
-    model.learn(total_timesteps=total_timesteps)
+    # RIGOROUS TRAINING: Extended training for robust convergence
+    # With 16 parallel envs: ~10M timesteps ≈ 30-40 minutes
+    total_timesteps = 10_000_000  # 10M timesteps for rigorous, robust convergence
+    print(f"\n{'='*70}")
+    print("🚀 RIGOROUS ANTI-OVERSHOOT TRAINING CONFIGURATION")
+    print(f"{'='*70}")
+    print(f"Environment: 200 max steps, 7 action options, 50mL burette limit")
+    print(f"Training: 10,000,000 timesteps with 16 parallel environments")
+    print(f"Network: [512, 512, 256] architecture with Tanh activation")
+    print(f"Exploration: Very high entropy (0.05) for extensive mistake learning")
+    print(f"Learning: Stable LR (2e-4) with 15 epochs per rollout")
+    print(f"Reward: Asymmetric anti-overshoot penalties (pH>7.0 heavily penalized)")
+    print(f"{'='*70}")
+    print(f"Key Feature: Heavy penalties for overshooting pH 7.0")
+    print(f"  - pH > 8.0: -100 reward penalty")
+    print(f"  - pH > 7.5: -50 reward penalty")
+    print(f"  - pH > 7.2: -20 reward penalty")
+    print(f"  - pH > 7.1: -10 reward penalty")
+    print(f"{'='*70}")
+    print(f"Visualizations will be saved to: {root / 'training_visualizations'}")
+    print(f"Expected training time: ~30-40 minutes (depending on hardware)")
+    print(f"Goal: Robust model that NEVER overshoots, learns from mistakes")
+    print(f"{'='*70}\n")
+    
+    # Check if progress bar dependencies are available
+    try:
+        import tqdm
+        import rich
+        use_progress_bar = True
+    except ImportError:
+        use_progress_bar = False
+        print("Note: tqdm/rich not installed. Training without progress bar.")
+        print("Install with: pip install stable-baselines3[extra]")
+    
+    model.learn(
+        total_timesteps=total_timesteps,
+        callback=callbacks,
+        progress_bar=use_progress_bar,
+    )
 
     save_path = models_dir / "ppo_weak_acid_indicator"
     model.save(save_path)

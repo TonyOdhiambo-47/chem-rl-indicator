@@ -17,7 +17,8 @@ web/dist
 web/.vite
 
 # IDE
-.vscode/
+.vscode/*
+!.vscode/settings.json
 .idea/
 *.swp
 *.swo
@@ -31,4 +32,9 @@ Thumbs.db
 *.log
 env/tb_logs/
 env/models/*.zip
+
+# Visualization outputs (keep structure, ignore generated files)
+env/training_visualizations/
+env/episode_visualizations/
+env/test_viz/
 

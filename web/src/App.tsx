@@ -1,19 +1,35 @@
 // src/App.tsx
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   computePHWeakAcidTitration,
   indicatorRgbFromPH,
   rgbToCss,
 } from "./chem";
+import EpisodeAnimation from "./EpisodeAnimation";
 import "./App.css";
 
 function App() {
+  const [mode, setMode] = useState<"manual" | "animation">("manual");
+  const [episodeData, setEpisodeData] = useState<any>(null);
   const [Va, setVa] = useState(50);       // mL
   const [Ca, setCa] = useState(0.1);      // M
   const [Cb, setCb] = useState(0.1);      // M
   const [pKa, setpKa] = useState(4.76);   // acetic acid
   const [Vb, setVb] = useState(0);        // base added (mL)
+
+  // Load episode data on mount
+  useEffect(() => {
+    fetch("/episode_data.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setEpisodeData(data);
+      })
+      .catch(() => {
+        // File doesn't exist, that's okay
+        console.log("No episode_data.json found. Run export_episode.py first.");
+      });
+  }, []);
 
   const pH = useMemo(
     () => computePHWeakAcidTitration(Va, Ca, Vb, Cb, pKa),
@@ -30,8 +46,45 @@ function App() {
   // equivalence volume for UI reference:
   const Veq_mL = (Ca * Va) / Cb;
 
+  // Show animation if episode data is loaded and in animation mode
+  if (mode === "animation" && episodeData) {
+    return (
+      <div className="App">
+        <div className="mode-switcher">
+          <button
+            onClick={() => setMode("manual")}
+            className={mode === "manual" ? "active" : ""}
+          >
+            Manual Control
+          </button>
+          <button
+            onClick={() => setMode("animation")}
+            className={mode === "animation" ? "active" : ""}
+          >
+            Live Agent Animation
+          </button>
+        </div>
+        <EpisodeAnimation episodeData={episodeData} speed={200} autoPlay={true} />
+      </div>
+    );
+  }
+
   return (
     <div className="App">
+      <div className="mode-switcher">
+        <button
+          onClick={() => setMode("manual")}
+          className={mode === "manual" ? "active" : ""}
+        >
+          Manual Control
+        </button>
+        <button
+          onClick={() => setMode("animation")}
+          className={mode === "animation" ? "active" : ""}
+        >
+          Live Agent Animation
+        </button>
+      </div>
       <h1>Chem RL Indicator – Titration Visualizer</h1>
       <div className="controls">
         <div className="control-group">
