@@ -219,16 +219,14 @@ class WeakAcidIndicatorEnv(gym.Env):
             delta_ml = self.step_sizes_ml[action]
             new_Vb_ml = (self.Vb_L * 1000.0) + delta_ml
             
-            # REALISTIC CONSTRAINT: Burette maximum capacity
+            # Check burette capacity limit
             if new_Vb_ml > self.max_burette_ml:
-                # Can't add more - burette is empty
                 terminated = True
                 truncated = False
-                # Heavy penalty for running out of titrant
                 pH = self._get_pH()
                 dist = abs(pH - self.pH_target)
                 reward = 50.0 * np.exp(-dist / 0.8) - 0.005
-                reward -= 30.0  # Penalty for running out
+                reward -= 30.0
                 obs = self._get_obs(pH)
                 info = {"pH": pH, "Vb_ml": self.Vb_L * 1000.0, "dist": dist, "burette_empty": True}
                 return obs, reward, terminated, truncated, info
@@ -238,134 +236,110 @@ class WeakAcidIndicatorEnv(gym.Env):
         pH = self._get_pH()
         self.history.append((self.Vb_L * 1000.0, pH, indicator_rgb_from_pH(pH, self.pKa_ind, self.neutral_band)))
 
-        # base reward: closeness to target pH + small step penalty
+        # Base reward: exponential closeness to target
         dist = abs(pH - self.pH_target)
+        reward = 50.0 * np.exp(-dist / 0.8) - 0.005
         
-        # CRITICAL: ASYMMETRIC REWARD - Heavy penalty for overshooting
-        # Overshooting is MUCH worse than undershooting
-        pH_overshoot = pH - self.pH_target  # Positive if above target
-        
-        # PORTFOLIO-GRADE REWARD SHAPING with anti-overshoot focus
-        # Multi-component reward that guides learning through exploration
-        
-        # 1. Primary reward: Exponential closeness to target (very strong gradient)
-        # At dist=0: reward = 50, at dist=7: reward ≈ 0.5
-        reward = 50.0 * np.exp(-dist / 0.8) - 0.005  # Minimal step penalty
-        
-        # 2. ANTI-OVERSHOOT: EXTREME penalties for going above pH 7.0
+        # Asymmetric penalty for overshooting (overshooting is worse than undershooting)
         if pH > self.pH_target:
-            # Progressive penalty that increases with overshoot - MUCH STRONGER
             overshoot_amount = pH - self.pH_target
-            if overshoot_amount > 1.0:  # Way too high (pH > 8.0)
-                reward -= 500.0  # EXTREME penalty - should never happen
-            elif overshoot_amount > 0.5:  # Too high (pH > 7.5)
-                reward -= 200.0  # MASSIVE penalty
-            elif overshoot_amount > 0.2:  # Slightly high (pH > 7.2)
-                reward -= 100.0  # Very heavy penalty
-            elif overshoot_amount > 0.1:  # Just above (pH > 7.1)
-                reward -= 50.0  # Heavy penalty
-            else:  # pH 7.0-7.1 (acceptable range)
-                reward -= 10.0  # Moderate penalty for being slightly above
-        
-        # 3. Progress bonus: Strongly reward getting closer (but penalize moving away)
-        if self._last_dist is not None:
-            progress = self._last_dist - dist  # Positive if getting closer
-            if progress > 0:
-                reward += 5.0 * progress  # Strong progress bonus
+            if overshoot_amount > 1.0:
+                reward -= 500.0
+            elif overshoot_amount > 0.5:
+                reward -= 200.0
+            elif overshoot_amount > 0.2:
+                reward -= 100.0
+            elif overshoot_amount > 0.1:
+                reward -= 50.0
             else:
-                # Moving away from target - penalize, especially if overshooting
-                reward += 2.0 * progress  # Smaller penalty for moving away
+                reward -= 10.0
+        
+        # Progress bonus: reward getting closer, penalize moving away
+        if self._last_dist is not None:
+            progress = self._last_dist - dist
+            if progress > 0:
+                reward += 5.0 * progress
+            else:
+                reward += 2.0 * progress
                 if pH > self.pH_target:
-                    reward -= 20.0  # EXTRA HEAVY penalty for moving further above target
+                    reward -= 20.0
         self._last_dist = dist
         
-        # 3.5. CRITICAL: Penalty for continuing after reaching target zone
-        # If already in sweet spot (6.9-7.0), continuing is risky
+        # Small penalty for continuing when already in target zone
         if 6.9 <= pH <= 7.0 and not terminated:
-            # Small penalty for continuing when already in sweet spot
-            # This encourages stopping early rather than risking overshoot
             reward -= 1.0
         
-        # 4. pH zone rewards: Guide agent through titration stages
-        # Buffer region (pH 3-6): Small positive reward for being in right range
+        # pH zone bonuses
         if 3.0 <= pH <= 6.0:
-            reward += 1.0  # Small bonus for being in buffer region
-        # Target zone (pH 6.5-7.0): Large reward (note: only up to 7.0, not above!)
+            reward += 1.0
         if 6.5 <= pH <= 7.0:
-            reward += 5.0  # Big bonus for being near target
-        # Sweet spot (pH 6.9-7.0): Huge reward (note: not above 7.0!)
+            reward += 5.0
         if 6.9 <= pH <= 7.0:
-            reward += 20.0  # Massive bonus for being in sweet spot
+            reward += 20.0
         
-        # 5. Volume-based guidance: Encourage reaching equivalence region
+        # Volume-based guidance
         V_ratio = self.Vb_L / self.Veq_L
-        if 0.8 <= V_ratio <= 1.0:  # Approaching equivalence (but not past)
-            reward += 2.0  # Bonus for being in equivalence region
-        if 0.95 <= V_ratio <= 1.0:  # Very close to equivalence (but not past)
-            reward += 5.0  # Bigger bonus
-        # Penalty for going past equivalence when pH is already too high
+        if 0.8 <= V_ratio <= 1.0:
+            reward += 2.0
+        if 0.95 <= V_ratio <= 1.0:
+            reward += 5.0
         if V_ratio > 1.0 and pH > 7.0:
-            reward -= 15.0  # Penalty for continuing past equivalence when already overshot
+            reward -= 15.0
         
-        # 6. Stopping rewards/penalties (only when agent chooses to stop)
+        # Stopping rewards/penalties
         if terminated:
-            # CRITICAL: Asymmetric stopping rewards - overshooting is MUCH worse
-            if pH <= self.pH_target:  # Stopped at or below target (good!)
-                if dist < 0.02:  # Extremely close
-                    reward += 500.0  # EXTREME bonus for perfect hit
+            if pH <= self.pH_target:
+                if dist < 0.02:
+                    reward += 500.0
                 elif dist < 0.05:
-                    reward += 300.0  # MASSIVE bonus
+                    reward += 300.0
                 elif dist < 0.1:
-                    reward += 150.0  # Very good bonus
+                    reward += 150.0
                 elif dist < 0.2:
-                    reward += 50.0  # Good bonus
+                    reward += 50.0
                 elif dist < 0.5:
-                    reward += 10.0  # Small bonus
-            else:  # Stopped above target (OVERSHOT - BAD!)
-                # EXTREME penalties that increase with overshoot
+                    reward += 10.0
+            else:
                 overshoot = pH - self.pH_target
-                if overshoot > 1.0:  # Way too high
-                    reward -= 1000.0  # EXTREME penalty - should never happen
+                if overshoot > 1.0:
+                    reward -= 1000.0
                 elif overshoot > 0.5:
-                    reward -= 500.0  # MASSIVE penalty
+                    reward -= 500.0
                 elif overshoot > 0.2:
-                    reward -= 200.0  # Very heavy penalty
+                    reward -= 200.0
                 elif overshoot > 0.1:
-                    reward -= 100.0  # Heavy penalty
-                else:  # pH 7.0-7.1 (slight overshoot)
-                    reward -= 30.0  # Moderate penalty
-                
+                    reward -= 100.0
+                else:
+                    reward -= 30.0
+            
             # Volume-based stopping penalties
-            if self.Vb_L < 0.01 * self.Veq_L:  # Stopped immediately
-                reward -= 50.0  # Massive penalty
-            elif self.Vb_L < 0.3 * self.Veq_L:  # Stopped way too early
+            if self.Vb_L < 0.01 * self.Veq_L:
+                reward -= 50.0
+            elif self.Vb_L < 0.3 * self.Veq_L:
                 reward -= 15.0
-            elif self.Vb_L < 0.7 * self.Veq_L:  # Stopped early
+            elif self.Vb_L < 0.7 * self.Veq_L:
                 reward -= 5.0
-            elif self.Vb_L > 1.0 * self.Veq_L and pH > 7.0:  # Past equivalence AND overshot
-                reward -= 100.0  # EXTREME penalty for overshooting past equivalence
+            elif self.Vb_L > 1.0 * self.Veq_L and pH > 7.0:
+                reward -= 100.0
 
-        # truncate if max steps or extreme conditions
-        # Allow more exploration - don't truncate too harshly
+        # Truncate if max steps reached
         if self.step_count >= self.max_steps and not terminated:
             truncated = True
-            # Give reward based on final state even if truncated
             if dist < 0.1:
-                reward += 10.0  # Good job even if ran out of steps
+                reward += 10.0
             elif dist < 0.5:
                 reward += 2.0
 
-        # Only terminate on truly extreme conditions
+        # Terminate on extreme pH values
         if pH <= 0.0 or pH >= 14.0:
             terminated = True
-            reward -= 30.0  # Heavy penalty for extreme pH
+            reward -= 30.0
         
-        # REALISTIC: Burette constraint already handled above
-        # Allow some overshoot to learn from mistakes, but not excessive
+        # Check for excessive volume beyond burette capacity
         Vb_ml = self.Vb_L * 1000.0
-        if Vb_ml > self.max_burette_ml * 1.1:  # Way beyond burette capacity
+        if Vb_ml > self.max_burette_ml * 1.1:
             terminated = True
-            reward -= 25.0  # Penalty for trying to exceed physical limit
+            reward -= 25.0
 
         obs = self._get_obs(pH)
         info = {"pH": pH, "Vb_ml": self.Vb_L * 1000.0, "dist": dist}

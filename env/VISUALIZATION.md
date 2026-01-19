@@ -36,7 +36,7 @@ The render shows:
 
 ### 2. **Live Episode Viewer** (`watch_training.py`)
 
-Watch episodes play out step-by-step in real-time, perfect for understanding agent behavior.
+Watch episodes play out step-by-step in real-time for understanding agent behavior.
 
 **Basic usage:**
 ```bash
@@ -116,30 +116,23 @@ During training:
 - **Content**: Multi-panel dashboard of training metrics
 - **Use case**: Tracking learning progress over time
 
-## Portfolio Presentation Tips
+## Usage Tips
 
-For your portfolio submission to the AI RL lab:
+1. **Demo videos**: Use `watch_training.py` to record episodes showing:
+   - Random policy behavior
+   - Early training performance
+   - Fully trained policy behavior
 
-1. **Create a demo video**: Use `watch_training.py` to record episodes showing:
-   - Random policy (poor performance)
-   - Early training (learning)
-   - Fully trained policy (optimal behavior)
-
-2. **Training progression**: Show training visualizations demonstrating:
+2. **Training progression**: Review training visualizations to observe:
    - Reward improvement over time
    - Episode length optimization
    - Convergence to target pH 7.0
 
-3. **Key metrics to highlight**:
-   - Final pH accuracy (should reach ~7.0)
-   - Base volume precision (should reach ~49.7 mL)
+3. **Key metrics**:
+   - Final pH accuracy (target: ~7.0)
+   - Base volume precision (target: ~49.7 mL)
    - Reward improvement trajectory
    - Sample efficiency
-
-4. **Visual storytelling**:
-   - Start with random policy visualization
-   - Show training progress over episodes
-   - End with trained policy successfully reaching pH 7.0
 
 ## Technical Details
 

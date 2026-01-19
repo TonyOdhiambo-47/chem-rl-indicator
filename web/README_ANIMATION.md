@@ -2,12 +2,11 @@
 
 ## Overview
 
-The React app now includes a **live animation mode** that shows the RL agent's performance step-by-step, with:
+The React app includes a live animation mode that shows the agent's performance step-by-step, with:
 - Real-time titration curve building
 - Animated indicator color changes
 - Step-by-step action visualization
 - Reward tracking
-- Professional portfolio-quality presentation
 
 ## Quick Start
 
@@ -62,13 +61,13 @@ npm run dev
 - Distance to target pH
 - V/Veq ratio
 
-## Portfolio Presentation
+## Use Cases
 
-This animation is perfect for:
-- **Demos**: Show how the agent learns and performs
-- **Presentations**: Visual storytelling of RL performance
-- **Portfolio**: Impressive interactive visualization
-- **Interviews**: Demonstrate understanding of RL + visualization
+This animation can be used for:
+- Demonstrations of agent behavior
+- Presentations of RL performance
+- Interactive visualization of results
+- Analysis of agent decision-making
 
 ## Export Options
 
@@ -128,6 +127,4 @@ The exported JSON contains:
 - Show trajectory for full context, hide for cleaner view
 
 ---
-
-**This is portfolio-grade visualization that will impress any AI/RL lab!**
 

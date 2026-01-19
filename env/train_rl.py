@@ -19,11 +19,11 @@ def make_env():
         Cb=0.1,
         pKa=4.76,
         pH_target=7.0,
-        max_steps=200,  # PORTFOLIO-GRADE: Allow extensive exploration
-        step_sizes_ml=(0.1, 0.2, 0.5, 1.0, 2.0, 3.0),  # More granular control
+        max_steps=200,
+        step_sizes_ml=(0.1, 0.2, 0.5, 1.0, 2.0, 3.0),
         pKa_ind=7.0,
         neutral_band=0.15,
-        max_burette_ml=50.0,  # REALISTIC: Standard burette capacity
+        max_burette_ml=50.0,  # Standard burette capacity
     )
 
 
@@ -51,7 +51,7 @@ def main():
     vis_callback = EpisodeVisualizationCallback(
         env=single_env,
         log_dir=str(root / "training_visualizations"),
-        save_freq=250,  # Save visualization every 250 episodes (more frequent tracking)
+        save_freq=250,
         verbose=1,
     )
     reliability_callback = ReliabilityEarlyStopCallback(
@@ -66,49 +66,48 @@ def main():
     )
     callbacks = CallbackList([vis_callback, reliability_callback])
 
-    # OPTIMIZED TRAINING: Hyperparameters tuned to prevent overshooting
+    # Hyperparameters tuned to prevent overshooting
     model = PPO(
         "MlpPolicy",
         vec_env,
         verbose=1,
         tensorboard_log=tb_log,
-        n_steps=4096,  # Longer rollouts for better gradient estimates
-        batch_size=1024,  # Large batches (factor of n_steps*n_envs=65536) for stable learning
-        n_epochs=15,  # More optimization epochs for better convergence
-        gamma=0.998,  # Higher discount for longer-term planning (prevents overshooting)
-        learning_rate=2e-4,  # Lower, more stable learning rate
-        ent_coef=0.05,  # Higher entropy for extensive exploration (learns from mistakes)
-        vf_coef=0.5,  # Value function coefficient
-        max_grad_norm=0.5,  # Gradient clipping for stability
-        clip_range=0.15,  # Tighter clip range for more stable updates
+        n_steps=4096,
+        batch_size=1024,
+        n_epochs=15,
+        gamma=0.998,
+        learning_rate=2e-4,
+        ent_coef=0.05,
+        vf_coef=0.5,
+        max_grad_norm=0.5,
+        clip_range=0.15,
         policy_kwargs=dict(
-            net_arch=[512, 512, 256],  # Larger, deeper network for complex policy
-            activation_fn=torch.nn.Tanh,  # Tanh for smoother gradients
+            net_arch=[512, 512, 256],
+            activation_fn=torch.nn.Tanh,
         ),
     )
 
-    # RIGOROUS TRAINING: Extended training for robust convergence
+    # Extended training for robust convergence
     # With 16 parallel envs: ~10M timesteps ≈ 30-40 minutes
-    total_timesteps = 10_000_000  # 10M timesteps for rigorous, robust convergence
+    total_timesteps = 10_000_000
     print(f"\n{'='*70}")
-    print("🚀 RIGOROUS ANTI-OVERSHOOT TRAINING CONFIGURATION")
+    print("Training Configuration")
     print(f"{'='*70}")
     print(f"Environment: 200 max steps, 7 action options, 50mL burette limit")
     print(f"Training: 10,000,000 timesteps with 16 parallel environments")
     print(f"Network: [512, 512, 256] architecture with Tanh activation")
-    print(f"Exploration: Very high entropy (0.05) for extensive mistake learning")
-    print(f"Learning: Stable LR (2e-4) with 15 epochs per rollout")
+    print(f"Exploration: Entropy coefficient 0.05")
+    print(f"Learning rate: 2e-4 with 15 epochs per rollout")
     print(f"Reward: Asymmetric anti-overshoot penalties (pH>7.0 heavily penalized)")
     print(f"{'='*70}")
-    print(f"Key Feature: Heavy penalties for overshooting pH 7.0")
-    print(f"  - pH > 8.0: -100 reward penalty")
-    print(f"  - pH > 7.5: -50 reward penalty")
-    print(f"  - pH > 7.2: -20 reward penalty")
-    print(f"  - pH > 7.1: -10 reward penalty")
+    print(f"Anti-overshoot penalties:")
+    print(f"  - pH > 8.0: -500 reward penalty")
+    print(f"  - pH > 7.5: -200 reward penalty")
+    print(f"  - pH > 7.2: -100 reward penalty")
+    print(f"  - pH > 7.1: -50 reward penalty")
     print(f"{'='*70}")
     print(f"Visualizations will be saved to: {root / 'training_visualizations'}")
     print(f"Expected training time: ~30-40 minutes (depending on hardware)")
-    print(f"Goal: Robust model that NEVER overshoots, learns from mistakes")
     print(f"{'='*70}\n")
     
     # Check if progress bar dependencies are available

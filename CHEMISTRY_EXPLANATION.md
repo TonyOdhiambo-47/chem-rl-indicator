@@ -128,7 +128,7 @@ pH = 14 - pOH
 
 ---
 
-## 🎨 pH Indicator Model
+## pH Indicator Model
 
 ### Chemical Principle
 

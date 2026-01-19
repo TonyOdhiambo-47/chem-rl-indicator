@@ -173,8 +173,7 @@ class ReliabilityEarlyStopCallback(BaseCallback):
     once the success rate exceeds a threshold for a number of consecutive
     evaluations.
 
-    This directly encodes the portfolio goal:
-    "Stop training once the agent reliably reaches pH 6.9–7.05."
+    Stops training once the agent reliably reaches pH 6.9–7.05.
     """
 
     def __init__(

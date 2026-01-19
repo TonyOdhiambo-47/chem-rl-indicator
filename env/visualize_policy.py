@@ -90,11 +90,11 @@ def main():
     models_dir = root / "models"
     model_path = models_dir / "ppo_weak_acid_indicator.zip"
 
-    # Use same env parameters as training (portfolio-grade config)
+    # Use same env parameters as training
     env = WeakAcidIndicatorEnv(
         max_steps=200,
         step_sizes_ml=(0.1, 0.2, 0.5, 1.0, 2.0, 3.0),
-        max_burette_ml=50.0,  # Realistic burette limit
+        max_burette_ml=50.0,
     )
     print(f"Environment: Veq = {env.Veq_L*1000:.2f} mL, Initial pH = {env._get_pH():.2f}")
     print(f"Note: pH 7.0 occurs BEFORE equivalence (at equivalence, pH ≈ 8.73)")

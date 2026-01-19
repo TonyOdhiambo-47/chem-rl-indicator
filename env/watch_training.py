@@ -166,9 +166,9 @@ def main():
     args = parser.parse_args()
     
     env = WeakAcidIndicatorEnv(
-        max_steps=200,  # Portfolio-grade: extended exploration
-        step_sizes_ml=(0.1, 0.2, 0.5, 1.0, 2.0, 3.0),  # More granular control
-        max_burette_ml=50.0,  # Realistic burette limit
+        max_steps=200,
+        step_sizes_ml=(0.1, 0.2, 0.5, 1.0, 2.0, 3.0),
+        max_burette_ml=50.0,
     )
     
     model = None

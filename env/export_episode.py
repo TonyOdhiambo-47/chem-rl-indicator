@@ -27,7 +27,7 @@ def run_and_export_episode(model_path=None, deterministic=True, output_path="epi
     env = WeakAcidIndicatorEnv(
         max_steps=200,
         step_sizes_ml=(0.1, 0.2, 0.5, 1.0, 2.0, 3.0),
-        max_burette_ml=50.0,  # Realistic burette limit
+        max_burette_ml=50.0,
     )
     
     # Load model if provided
@@ -107,7 +107,7 @@ def run_and_export_episode(model_path=None, deterministic=True, output_path="epi
     with open(output_path, 'w') as f:
         json.dump(trajectory, f, indent=2)
     
-    print(f"\n✅ Episode exported to {output_path}")
+    print(f"\nEpisode exported to {output_path}")
     print(f"   Steps: {step}")
     print(f"   Final pH: {trajectory['summary']['final_pH']:.2f}")
     print(f"   Final Vb: {trajectory['summary']['final_Vb_ml']:.2f} mL")
